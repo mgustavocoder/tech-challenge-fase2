@@ -1,9 +1,9 @@
-# Projeto lanchonete DDD com Arquitetura Hexagonal (Ports and Adapters)
+# Projeto lanchonete DDD com Clean Arquitecture
 Esse projeto é o Tech Challenge da fase 2 da Pós Tech da FIAP em Arquitetura de Software, que consiste um uma aplicação monolítica para uma lanchonete, com uma API contendo funcionalidades de cadastro e listagem de produtos, realização de pedidos, entre outras coisas, vide documentação da API abaixo.
 
 A incialização do projeto, containers de aplicação, banco de dados são feitos através da ferramenta docker compose.
 
-A arquitetura de software é a Arquitetura Hexagonal, juntamente com a modelagem Domain Driven Design.
+A arquitetura de software é a Clean Arquitecture, juntamente com a modelagem Domain Driven Design.
 
 O design estratégico e tático do DDD, além do Event Storming pode ser encontrado nessa página do Miro
 
@@ -16,6 +16,10 @@ Execute o projeto utilizando o **Docker Compose**, executando o comando abaixo, 
 docker-compose up --build
 ```
 Esse comando irá subir dois containers docker (**tc-db** e **tc-app**), um para servir o banco de dados MySQL e outro para rodar a aplicação NodeJS.
+
+## Documentação OpanAPI
+Copie o conteúdo do arquivo "openapi.yaml" e cole no Swagger Editor
+https://editor.swagger.io/
 
 ## Documentação da API
 ### Adicionar um lanche ao cardápio:
