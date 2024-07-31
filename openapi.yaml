@@ -1,0 +1,352 @@
+openapi: 3.0.0
+info:
+  title: Cardápio e Pedidos API
+  description: API para gerenciar cardápio e pedidos de uma lanchonete.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor local
+
+paths:
+  /produtos:
+    post:
+      summary: Adicionar um produto ao cardápio
+      requestBody:
+        description: Dados do produto a ser adicionado
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                descricao:
+                  type: string
+                preco:
+                  type: number
+                  format: float
+                categoria:
+                  type: string
+                  enum: [LANCHE, ACOMPANHAMENTO, BEBIDA, SOBREMESA]
+      responses:
+        201:
+          description: Produto adicionado com sucesso
+    get:
+      summary: Listar todos os produtos
+      responses:
+        200:
+          description: Lista de todos os produtos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+
+  /lanches:
+    get:
+      summary: Listar todos os lanches
+      responses:
+        200:
+          description: Lista de todos os lanches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lanche'
+
+  /acompanhamentos:
+    get:
+      summary: Listar todos os acompanhamentos
+      responses:
+        200:
+          description: Lista de todos os acompanhamentos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Acompanhamento'
+
+  /bebidas:
+    get:
+      summary: Listar todos as bebidas
+      responses:
+        200:
+          description: Lista de todas as bebidas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bebida'
+
+  /sobremesas:
+    get:
+      summary: Listar todas as sobremesas
+      responses:
+        200:
+          description: Lista de todas as sobremesas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sobremesa'
+
+  /acessos/sign-up:
+    post:
+      summary: Cadastrar um cliente
+      requestBody:
+        description: Dados do cliente a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                cpf:
+                  type: string
+                senha:
+                  type: string
+      responses:
+        201:
+          description: Cliente cadastrado com sucesso
+
+  /acessos/sign-in:
+    post:
+      summary: Autenticar um cliente
+      requestBody:
+        description: Dados de autenticação do cliente
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                senha:
+                  type: string
+      responses:
+        200:
+          description: Cliente autenticado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+
+  /pedidos:
+    post:
+      summary: Criar um pedido
+      requestBody:
+        description: Dados do pedido a ser criado
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ponto_de_venda_id:
+                  type: integer
+                itens:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                      preco:
+                        type: number
+                        format: float
+                      descricao:
+                        type: string
+                      categoria:
+                        type: string
+                        enum: [LANCHE, ACOMPANHAMENTO, BEBIDA, SOBREMESA]
+      responses:
+        201:
+          description: Pedido criado com sucesso
+    get:
+      summary: Listar todos os pedidos
+      responses:
+        200:
+          description: Lista de todos os pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pedido'
+
+  /pedidos/{id}:
+    get:
+      summary: Listar pedido por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID do pedido
+      responses:
+        200:
+          description: Detalhes do pedido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+
+  /clientes:
+    get:
+      summary: Listar todos os clientes
+      responses:
+        200:
+          description: Lista de todos os clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+
+  /clientes/{cpf}:
+    get:
+      summary: Listar cliente por CPF
+      parameters:
+        - in: path
+          name: cpf
+          required: true
+          schema:
+            type: string
+          description: CPF do cliente
+      responses:
+        200:
+          description: Detalhes do cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+
+components:
+  schemas:
+    Produto:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        preco:
+          type: number
+          format: float
+        categoria:
+          type: string
+          enum: [LANCHE, ACOMPANHAMENTO, BEBIDA, SOBREMESA]
+    Lanche:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        preco:
+          type: number
+          format: float
+        categoria:
+          type: string
+          example: 'LANCHE'
+    Bebida:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        preco:
+          type: number
+          format: float
+        categoria:
+          type: string
+          example: 'BEBIDA'
+    Acompanhamento:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        preco:
+          type: number
+          format: float
+        categoria:
+          type: string
+          example: 'ACOMPANHAMENTO'
+    Sobremesa:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        preco:
+          type: number
+          format: float
+        categoria:
+          type: string
+          example: 'SOBREMESA'
+    Pedido:
+      type: object
+      properties:
+        id:
+          type: integer
+        ponto_de_venda_id:
+          type: integer
+        itens:
+          type: array
+          items:
+            type: object
+            properties:
+              nome:
+                type: string
+              preco:
+                type: number
+                format: float
+              descricao:
+                type: string
+              categoria:
+                type: string
+                enum: [LANCHE, ACOMPANHAMENTO, BEBIDA, SOBREMESA]
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+        cpf:
+          type: string
